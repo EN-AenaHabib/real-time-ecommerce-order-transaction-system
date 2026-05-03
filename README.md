@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🛒 Real-Time E-Commerce Data Pipeline
 
 > **Stack:** Apache Kafka · Python · PostgreSQL · Grafana · Docker Compose
@@ -196,3 +197,7 @@ realtime-pipeline/
 ## 📄 License
 
 MIT License — free to use, modify, and distribute.
+=======
+# real-time-ecommerce-order-transaction-system
+Event-driven pipeline for processing e-commerce orders and transactions with real-time analytics dashboards.
+>>>>>>> 2cc3a3fee8f4d9d4f645616881d566056eb19113
