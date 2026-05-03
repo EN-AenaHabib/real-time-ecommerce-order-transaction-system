@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 🛒 Real-Time E-Commerce Data Pipeline
 
 > **Stack:** Apache Kafka · Python · PostgreSQL · Grafana · Docker Compose
