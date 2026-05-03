@@ -1,0 +1,161 @@
+{
+  "title": "E-Commerce Real-Time Pipeline",
+  "uid": "ecommerce-pipeline",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "5s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Total Orders",
+      "gridPos": { "x": 0, "y": 0, "w": 4, "h": 4 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT COUNT(*) AS total FROM orders;",
+        "format": "table"
+      }],
+      "options": { "colorMode": "background", "graphMode": "none" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" } } }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Total Revenue ($)",
+      "gridPos": { "x": 4, "y": 0, "w": 4, "h": 4 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT ROUND(SUM(total_amount)::numeric, 2) AS revenue FROM orders;",
+        "format": "table"
+      }],
+      "options": { "colorMode": "background" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" }, "unit": "currencyUSD" } }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Avg Order Value ($)",
+      "gridPos": { "x": 8, "y": 0, "w": 4, "h": 4 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT ROUND(AVG(total_amount)::numeric, 2) AS avg_value FROM orders;",
+        "format": "table"
+      }],
+      "options": { "colorMode": "background" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "orange" }, "unit": "currencyUSD" } }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Orders Last 5 Min",
+      "gridPos": { "x": 12, "y": 0, "w": 4, "h": 4 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT COUNT(*) FROM orders WHERE event_time >= NOW() - INTERVAL '5 minutes';",
+        "format": "table"
+      }],
+      "options": { "colorMode": "background" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "purple" } } }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Cancelled Orders",
+      "gridPos": { "x": 16, "y": 0, "w": 4, "h": 4 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT COUNT(*) FROM orders WHERE status = 'cancelled';",
+        "format": "table"
+      }],
+      "options": { "colorMode": "background" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "red" } } }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Active Regions",
+      "gridPos": { "x": 20, "y": 0, "w": 4, "h": 4 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT COUNT(DISTINCT region) FROM orders;",
+        "format": "table"
+      }],
+      "options": { "colorMode": "background" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "teal" } } }
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Orders Per Minute (Live)",
+      "gridPos": { "x": 0, "y": 4, "w": 16, "h": 8 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT date_trunc('minute', event_time) AS time, COUNT(*) AS orders, SUM(total_amount) AS revenue FROM orders WHERE event_time >= NOW() - INTERVAL '1 hour' GROUP BY 1 ORDER BY 1;",
+        "format": "time_series"
+      }],
+      "fieldConfig": {
+        "defaults": { "custom": { "lineWidth": 2, "fillOpacity": 15 } }
+      }
+    },
+    {
+      "id": 8,
+      "type": "piechart",
+      "title": "Revenue by Category",
+      "gridPos": { "x": 16, "y": 4, "w": 8, "h": 8 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT category, SUM(total_amount) AS revenue FROM orders GROUP BY category ORDER BY revenue DESC;",
+        "format": "table"
+      }],
+      "options": { "pieType": "donut", "displayLabels": ["name", "percent"] }
+    },
+    {
+      "id": 9,
+      "type": "barchart",
+      "title": "Orders by Region",
+      "gridPos": { "x": 0, "y": 12, "w": 12, "h": 8 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT region, COUNT(*) AS total_orders, ROUND(SUM(total_amount)::numeric,2) AS revenue FROM orders GROUP BY region ORDER BY total_orders DESC;",
+        "format": "table"
+      }]
+    },
+    {
+      "id": 10,
+      "type": "piechart",
+      "title": "Order Status Breakdown",
+      "gridPos": { "x": 12, "y": 12, "w": 6, "h": 8 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT status, COUNT(*) AS count FROM orders GROUP BY status ORDER BY count DESC;",
+        "format": "table"
+      }],
+      "options": { "pieType": "pie", "displayLabels": ["name", "percent"] }
+    },
+    {
+      "id": 11,
+      "type": "piechart",
+      "title": "Payment Methods",
+      "gridPos": { "x": 18, "y": 12, "w": 6, "h": 8 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT payment_method, COUNT(*) AS transactions FROM orders GROUP BY payment_method ORDER BY transactions DESC;",
+        "format": "table"
+      }],
+      "options": { "pieType": "donut", "displayLabels": ["name", "percent"] }
+    },
+    {
+      "id": 12,
+      "type": "table",
+      "title": "Recent Orders (Live Feed)",
+      "gridPos": { "x": 0, "y": 20, "w": 24, "h": 8 },
+      "datasource": "PostgreSQL",
+      "targets": [{
+        "rawSql": "SELECT order_id, customer_id, product, category, quantity, total_amount, payment_method, status, region, event_time FROM orders ORDER BY event_time DESC LIMIT 20;",
+        "format": "table"
+      }],
+      "options": { "sortBy": [{ "displayName": "event_time", "desc": true }] }
+    }
+  ]
+}
