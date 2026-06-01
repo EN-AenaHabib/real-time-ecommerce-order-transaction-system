@@ -8,7 +8,7 @@ A production-style real-time data pipeline that simulates, streams, processes, a
 ![Dashboard Demo](demo.gif)
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────┐     Kafka Topic      ┌─────────────┐     INSERT      ┌─────────────┐
