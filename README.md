@@ -33,7 +33,7 @@ A production-style real-time data pipeline that simulates, streams, processes, a
 
 ---
 
-## 📊 Dashboard Panels
+##  Dashboard Panels
 
 | Panel | Type | Description |
 |-------|------|-------------|
