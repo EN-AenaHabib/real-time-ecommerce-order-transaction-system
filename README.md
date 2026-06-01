@@ -52,7 +52,7 @@ A production-style real-time data pipeline that simulates, streams, processes, a
 
 ---
 
-## 🚀 Quick Start — Docker (Recommended)
+## Quick Start — Docker (Recommended)
 
 ### Prerequisites
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
