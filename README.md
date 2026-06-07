@@ -3,7 +3,7 @@
 
 > **Stack:** Apache Kafka · Python · PostgreSQL · Grafana · Docker Compose
 
-A production-style real-time data pipeline that simulates, streams, processes, and visualizes live e-commerce order transactions. Built to demonstrate event-driven architecture, stream processing, and real-time analytics dashboarding.
+A production-style real-time data pipeline that simulates, streams, processes, and visualizes live e-commerce order transactions. demonstrating event-driven architecture, stream processing, and real-time analytics dashboarding.
 
 ![Dashboard Demo](demo.gif)
 ---
